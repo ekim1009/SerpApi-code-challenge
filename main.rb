@@ -1,14 +1,7 @@
 require 'pathname'
 require 'fileutils'
 require 'json'
-require_relative './src/parser1'
-require_relative './src/parser2'
-
-PROCESSOR_MAP = {
-  "van-gogh-paintings.html" => Parser1,
-  "how-to-tie-a-tie.html" => Parser2,
-  "pasta-recipes.html" => Parser2
-}
+require_relative './src/carousel_parser'
 
 def get_html_files
   html_files_dir = Pathname.new(__dir__).join('files').realpath
@@ -19,19 +12,16 @@ def process_html_files
   html_files_dir = Pathname.new(__dir__).join('files').realpath
   output_dir = Pathname.new(__dir__).join('output')
 
+  output_dir.mkpath
+
   get_html_files.each do |filename|
-    processor = PROCESSOR_MAP[filename]
-
-    unless processor
-      puts "No processor found for #{filename}"
-      next
-    end
-
     file_path = File.join(html_files_dir, filename)
     html_content = File.read(file_path)
-    result = processor.process(html_content)
 
-    puts "Processed #{filename} with #{processor}"
+    parser = CarouselParser.new
+    result = parser.parse(html_content)
+
+    puts "Processed #{filename} with GoogleCarouselParser"
 
     output_filename = filename.sub('.html', '.json')
     output_path = output_dir.join(output_filename)
@@ -42,3 +32,4 @@ def process_html_files
 end
 
 process_html_files
+
