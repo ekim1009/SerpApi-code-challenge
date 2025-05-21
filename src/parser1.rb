@@ -1,5 +1,6 @@
 require 'nokogiri'
 
+# parser for van-gogh-paintings.html
 class Parser1
   def self.process(html)
     doc = Nokogiri::HTML(html)
@@ -11,15 +12,18 @@ class Parser1
     carousel.css('a').each do |a|
       href = a['href']
       alt = a.at_css('img')['alt']
-      extension = a.at_css('div.cxzHyb')&.text
+      extension = a.at_css('div.cxzHyb')&.text&.strip
       image = a.at_css('img')['src']
-puts a.at_css('img')
-      result["artworks"] << {
+
+      artwork = {
         "name" => alt,
-        "extension" => [extension],
-        "link" => "www.google.com/#{href}",
+        "link" => "https://www.google.com/#{href}",
         "image" => image
       }
+
+      artwork["extensions"] = [extension] if extension && !extension.empty?
+
+      result["artworks"] << artwork
     end
     result
   end

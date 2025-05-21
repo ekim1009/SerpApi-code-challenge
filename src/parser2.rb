@@ -1,6 +1,7 @@
 require 'nokogiri'
 require 'date'
 
+# parser for how-to-tie-a-tie.html and pasta-recipes.html
 class Parser2
   def self.process(html)
     doc = Nokogiri::HTML(html)
@@ -18,8 +19,8 @@ class Parser2
 
       result["videos"] << {
         "name" => alt,
-        "extension" => [extension],
-        "link" => "www.google.com/#{href}",
+        "extensions" => [extension],
+        "link" => "https://www.google.com/#{href}",
         "image" => image
       }
     end
