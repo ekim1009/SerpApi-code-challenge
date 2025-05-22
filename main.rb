@@ -21,15 +21,11 @@ def process_html_files
     parser = CarouselParser.new
     result = parser.parse(html_content)
 
-    puts "Processed #{filename} with GoogleCarouselParser"
-
     output_filename = filename.sub('.html', '.json')
     output_path = output_dir.join(output_filename)
 
     File.write(output_path, JSON.pretty_generate(result))
-    puts "Saved result to #{output_path}"
   end
 end
 
 process_html_files
-
