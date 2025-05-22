@@ -2,11 +2,10 @@ require 'nokogiri'
 require 'base64'
 
 class CarouselParser
-  attr_reader :root, :image_fn_strings
+  attr_reader :root
 
   def initialize
     @root = nil
-    @image_fn_strings = []
   end
 
   def parse(html)
